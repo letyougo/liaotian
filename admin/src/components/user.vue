@@ -1,33 +1,38 @@
 <template>
   <div class="hello">
-    <el-table :data="list">
+    <el-table :data="list" border>
       <el-table-column
         prop="id"
         label="id"
-        width="180">
+      >
       </el-table-column>
       <el-table-column
         prop="username"
         label="用户id"
-        width="180">
+      >
+          <template scope="scope">
+            <router-link :to=" 'user/'+scope.row.id ">{{scope.row.username}}</router-link>
+          </template>
       </el-table-column>
 
       <el-table-column
         prop="nickname"
         label="用户昵称"
-        width="180">
+
+      >
       </el-table-column>
 
       <el-table-column
         prop="nickname"
         label="用户昵称"
-        width="180">
+
+      >
       </el-table-column>
 
       <el-table-column
         prop="createdAt"
         label="创建时间"
-        width="180">
+      >
       </el-table-column>
 
 
