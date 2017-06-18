@@ -37,12 +37,28 @@ const Reply =sequelize.define('reply',{
 })
 Reply.belongsTo(Comment)
 
+
+const Relation = sequelize.define('relation',{
+
+})
+User.belongsToMany(User,{as:'friend',through:Relation})
+
+const Request = sequelize.define('request',{
+    content :  Sequelize.STRING,
+    response:Sequelize.BOOLEAN,
+    read:Sequelize.BOOLEAN
+})
+Request.belongsTo(User,{as:'from'})
+Request.belongsTo(User,{as:'to'})
+sequelize.sync()
 module.exports = {
     User,
     Post,
     Comment,
     Star,
     Reply,
+    Relation,
+    Request,
     connect:sequelize
 }
 

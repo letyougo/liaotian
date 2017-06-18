@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import user from '../components/user.vue'
+import userItem from '../components/user.item.vue'
 import post from '../components/post.vue'
 Vue.use(Router)
 
@@ -9,12 +10,20 @@ export default new Router({
     {
       path: '/user',
       name: '用户',
-      component: user
+      component: user,
     },
+    {path:'/user/:id',name:'用户项',component:userItem,  hidden:true},
     {
       path: '/post',
       name: '说说',
-      component: post
+      component: post,
+
+    },
+    {
+      path: '/post/:id',
+      name: '说说项',
+      component: post,
+      hidden:true
     }
   ]
 })
