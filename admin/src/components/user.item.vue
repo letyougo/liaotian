@@ -3,18 +3,10 @@
     <h1>{{username}}</h1>
     <h3>文章列表</h3>
     <el-form :inline="true">
-
         <el-form-item>
             <el-button @click="addPost.visible=true">增加文章</el-button>
         </el-form-item>
-      <!--toto 编辑文章-->
-        <el-form-item>
-          <el-button >编辑文章</el-button>
-        </el-form-item>
-      <!--toto 删除文章-->
-      <el-form-item>
-        <el-button type="danger">删除文章</el-button>
-      </el-form-item>
+
     </el-form>
     <el-dialog
       title="增加文章"
@@ -33,6 +25,30 @@
         <el-button type="primary" @click="handleAddPost">确 定</el-button>
       </span>
     </el-dialog>
+
+
+
+
+
+    <el-dialog
+      title="编辑文章"
+      :visible="editPost.visible"
+    >
+      <el-form>
+        <el-form-item  label="标题" label-width="50px">
+          <el-input v-model="editPost.title"></el-input>
+        </el-form-item>
+        <el-form-item  label="内容" label-width="50px">
+          <el-input v-model="editPost.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editPost.visible=false">取 消</el-button>
+        <el-button type="primary" @click="saveEditPost">确 定</el-button>
+      </span>
+    </el-dialog>
+
+
     <el-table :data="post" border>
       <el-table-column
         type="selection"
@@ -40,9 +56,21 @@
       </el-table-column>
         <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="content" label="内容"></el-table-column>
+      <el-table-column  label="操作">
+          <template scope="scope">
+              <el-button @click="openEditPost(scope.row)">编辑</el-button>
+              <el-button type="danger" @click="handleDeletePost(scope.row.id)">删除</el-button>
+          </template>
+      </el-table-column>
       <el-table-column prop="createdAt" label="创建时间"></el-table-column>
       <el-table-column prop="updatedAt" label="最后更新时间"></el-table-column>
     </el-table>
+
+
+
+
+
+
     <h3>好友列表</h3>
     <el-form :inline="true">
 
@@ -72,7 +100,7 @@
   </div>
 </template>
 <script>
-  import {detail,addPost} from './user.item.api'
+  import {detail,addPost,deletePost,editPost} from './user.item.api'
   import {get_all_user} from './user.api'
   export default {
       name:'user-item',
@@ -80,6 +108,11 @@
           return {
               addPost:{
                   visible:false,
+                  title:'',
+                  content:''
+              },
+              editPost:{
+                  visible : false,
                   title:'',
                   content:''
               },
@@ -109,6 +142,52 @@
                 this.post = item.post
                 this.friend = item.friend
             })
+          },
+          openEditPost(item){
+              var post = Object.assign({},item,{visible:true})
+              this.editPost = post
+          },
+          saveEditPost(){
+              var post = this.editPost
+              var obj = Object.assign({},post)
+              delete post.visible
+
+              editPost(this.id,obj.id,obj,(item)=>{
+                  this.post = this.post.map((obj)=>{
+                      if(obj.id == item.id){
+                          obj = Object.assign({},item)
+                      }
+                      return obj
+                  })
+              })
+          },
+          handleDeletePost(postId){
+
+            this.$confirm('此操作将永久删除该这条数据, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              deletePost(this.id,postId,(item)=>{
+
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                this.post= this.post.filter((obj)=>{
+                    return obj.id !=item.id
+                })
+//
+              })
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消删除'
+              });
+            });
+
+
+
           },
           handleAddPost(){
             addPost(this.id,{title:this.addPost.title,content:this.addPost.content},(item)=>{

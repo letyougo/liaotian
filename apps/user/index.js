@@ -55,7 +55,6 @@ router.get('/:id/post',(req,res)=>{
 })
 
 router.post('/:id/post',(req,res)=>{
-    console.log(req.body,'-----')
     model.Post.create({
         userId:req.params.id,
         title:req.body.title,
@@ -63,6 +62,28 @@ router.post('/:id/post',(req,res)=>{
     }).then((item)=>{
         res.send(item)
     })
+})
+
+router.patch('/:userId/post/:postId',(req,res)=>{
+    model
+        .Post.findById(req.params.postId)
+        .then(post=>{
+            post.update(req.body)
+                .then((item)=>{
+                    res.send(item)
+                })
+        })
+})
+
+router.delete('/:userId/post/:postId',(req,res)=>{
+    model
+        .Post.findById(req.params.postId)
+        .then(post=>{
+            post.destroy()
+                .then((item)=>{
+                    res.send(item)
+                })
+        })
 })
 
 router.get('/:id/friend',(req,res)=>{

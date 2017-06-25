@@ -17,3 +17,21 @@ export function addPost(id,obj,cb) {
           cb(res.body)
       })
 }
+
+
+export function editPost(userId,postId,obj,cb) {
+  request
+    .patch(host+'user/'+userId+'/post'+'/'+postId)
+    .send(obj)
+    .end((err,res)=>{
+      cb(res.body)
+    })
+}
+
+export function deletePost(userId,postId,cb) {
+  request
+    .delete(host+'user/'+userId+'/post/'+postId)
+    .end((err,res)=>{
+      cb(res.body)
+    })
+}
