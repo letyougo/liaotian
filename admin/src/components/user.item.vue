@@ -1,6 +1,20 @@
 <template>
   <div class="user-item">
     <h1>{{username}}</h1>
+    <div>
+      <img :src="logo" width="100" height="100"/>
+    </div>
+
+    <el-upload
+      name="file"
+      action="http://localhost:3000/upload"
+      :on-success="onSuccess"
+      list-type="picture">
+      <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
+
+    <el-button @click="saveAsLogo">保存个头像</el-button>
+
     <h3>文章列表</h3>
     <el-form :inline="true">
         <el-form-item>
@@ -100,7 +114,7 @@
   </div>
 </template>
 <script>
-  import {detail,addPost,deletePost,editPost} from './user.item.api'
+  import {detail,addPost,deletePost,editPost,edit} from './user.item.api'
   import {get_all_user} from './user.api'
   export default {
       name:'user-item',
@@ -128,10 +142,19 @@
               updatedAt:'',
               post:[],
               friend:[],
-              allUser:[]
+              allUser:[],
+              tempLogoUrl:''
           }
       },
       methods:{
+          onSuccess(response){
+              this.tempLogoUrl = response.url
+          },
+          saveAsLogo(){
+              edit(this.id,{logo:this.tempLogoUrl},(item)=>{
+                  this.logo = item.logo
+              })
+          },
           fetch(){
             detail(this.id,(item)=>{
                 this.username = item.username

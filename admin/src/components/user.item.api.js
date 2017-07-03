@@ -9,6 +9,16 @@ export function detail(id, cb) {
       })
 }
 
+
+export function edit(id,obj,cb) {
+    request
+      .patch(host+'user/'+id)
+      .send(obj)
+      .end((err,res)=>{
+          cb(res.body)
+      })
+}
+
 export function addPost(id,obj,cb) {
     request
       .post(host+'user/'+id+'/post')

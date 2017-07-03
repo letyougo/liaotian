@@ -23,15 +23,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="28202e12-5835-4b33-9703-e8b78093c081">
-        <schema name="doangnao" object-types="function, procedure, table, view" />
-        <schema name="dongnao_liaotian" object-types="column, constraint, function, index, procedure, table, dataset trigger, view" />
-      </connection>
-      <connection connection-id="67b47f63-dec6-4e98-acb1-f9b68608868a">
-        <schema name="dongnao_liaotian" object-types="table, view" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="28202e12-5835-4b33-9703-e8b78093c081">
